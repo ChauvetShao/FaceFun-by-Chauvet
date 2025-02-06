@@ -1,0 +1,55 @@
+<!--pages/camera/camera.wxml-->
+<view class="container">
+  <camera device-position="{{devicePosition}}" flash="off" class="camera" binderror="handleError">
+    <!-- 特效遮罩层 -->
+    <cover-view class="effect-overlay" wx:if="{{currentEffect && effectPosition && isVKAvailable}}">
+      <cover-image 
+        class="effect-image" 
+        src="{{currentEffectImage}}"
+        style="position: absolute; left: {{effectPosition.left}}; top: {{effectPosition.top}}; width: {{effectPosition.width}}; height: {{effectPosition.height}}; transform: {{effectPosition.transform}}; transform-origin: center center;"
+        binderror="handleEffectImageError"
+      ></cover-image>
+    </cover-view>
+  </camera>
+  
+  <!-- 特效选择面板 - 使用cover-view确保在相机上层 -->
+  <cover-view class="effects-panel" wx:if="{{showEffects && isVKAvailable}}">
+    <cover-view class="effects-list">
+      <cover-view 
+        class="effect-item {{currentEffect === item.id ? 'active' : ''}}" 
+        wx:for="{{effects}}" 
+        wx:key="id" 
+        bindtap="selectEffect" 
+        data-effect="{{item.id}}"
+      >
+        <cover-image class="effect-preview" src="{{item.preview}}"></cover-image>
+      </cover-view>
+    </cover-view>
+  </cover-view>
+  
+  <!-- 控制按钮 -->
+  <cover-view class="controls">
+    <cover-view class="control-btn" bindtap="switchCamera">
+      <cover-image class="btn-icon" src="/images/switch.png"></cover-image>
+    </cover-view>
+    
+    <cover-view class="control-btn capture-btn" bindtap="takePhoto">
+      <cover-image class="btn-icon" src="/images/capture.png"></cover-image>
+    </cover-view>
+    
+    <cover-view 
+      class="control-btn {{showEffects ? 'active' : ''}}" 
+      bindtap="toggleEffects"
+      wx:if="{{isVKAvailable}}"
+    >
+      <cover-image class="btn-icon" src="/images/effects.png"></cover-image>
+    </cover-view>
+  </cover-view>
+  
+  <!-- 添加用于截图的 canvas -->
+  <canvas 
+    type="2d" 
+    id="captureCanvas" 
+    style="position: absolute; left: -9999px; width: {{canvasWidth}}px; height: {{canvasHeight}}px;"
+  ></canvas>
+</view>

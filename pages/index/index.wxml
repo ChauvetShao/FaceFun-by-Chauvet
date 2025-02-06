@@ -1,0 +1,10 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="animated-dots">
+    <view class="dot" wx:for="{{12}}" wx:key="index"></view>
+  </view>
+  
+  <view class="camera-btn" hover-class="btn-hover" bindtap="navigateToCamera" bindtouchstart="playTapSound">
+    <image class="btn-image" src="/images/camera-icon.png" mode="aspectFit"></image>
+  </view>
+</view>
